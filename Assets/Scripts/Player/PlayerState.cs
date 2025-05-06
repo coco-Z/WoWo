@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -701,8 +702,9 @@ public class PlayerStateDead : IPlayerState
                     return;
                 }
                 // 重新加载当前场景
-                string currentSceneName = SceneManager.GetActiveScene().name;
-                SceneManager.LoadScene(currentSceneName);
+
+                string currentSceneAddress = SceneManager.GetActiveScene().name;
+                Addressables.LoadSceneAsync(currentSceneAddress, LoadSceneMode.Single, true);
             }
         }
     }
