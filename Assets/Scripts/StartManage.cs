@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class StartManage : MonoBehaviour
 {
-    public GameObject selectLevelPanal;
-    public GameObject infoPanal;
+    public GameObject selectLevelPanal;     // 选择关卡面板
+    public GameObject infoPanal;            // 角色信息面板
 
     // 在第一帧更新前调用启动
     void Start()
@@ -23,18 +23,27 @@ public class StartManage : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// 点击开始按钮
+    /// </summary>
     public void StartBtnAction()
     { 
         selectLevelPanal.SetActive(true);
         SoundManage.Player(SoundName.select);
     }
 
+    /// <summary>
+    /// 点击角色信息按钮回调
+    /// </summary>
     public void OnClickInfo()
     {
         infoPanal.SetActive(true);
         SoundManage.Player(SoundName.select);
     }
 
+    /// <summary>
+    /// 进入当前场景过度效果
+    /// </summary>
     private void EntScene()
     {
         // 切换场景效果

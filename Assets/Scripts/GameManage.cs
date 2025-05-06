@@ -4,6 +4,12 @@ using Unity.VisualScripting;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.AddressableAssets.ResourceLocators;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
+using UnityEditor;
+using UnityEngine.ResourceManagement.ResourceProviders;
 
 public class GameManage : MonoBehaviour
 {
@@ -51,31 +57,49 @@ public class GameManage : MonoBehaviour
     /// <returns></returns>
     IEnumerator LoardLevels()
     {
-        int sceneCount = SceneManager.sceneCountInBuildSettings; // 获取已打包的场景总数
-        string[] sceneFiles = new string[sceneCount];
+        List<string> sceneNames = new List<string>();
 
-        for (int i = 0; i < sceneCount; i++)
-        {
-            string scenePath = SceneUtility.GetScenePathByBuildIndex(i); // 获取场景路径
-            string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePath); // 提取场景名称
-            sceneFiles[i] = sceneName;
-        }
+        // 加载所有带有指定标签的资源位置
+        AsyncOperationHandle<IList<IResourceLocation>> handle = Addressables.LoadResourceLocationsAsync("GameLevel");
+        yield return handle;
 
-        // 提取文件名（不包括扩展名），并筛选出以"Level"开头的文件
-        List<string> levelSceneNames = new List<string>();
-        foreach (string file in sceneFiles)
+        if (handle.Status == AsyncOperationStatus.Succeeded)
         {
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file);
-            if (fileNameWithoutExtension.StartsWith("Level"))
+            IList<IResourceLocation> locations = handle.Result;
+
+            foreach (IResourceLocation location in locations)
             {
-                levelSceneNames.Add(fileNameWithoutExtension);
+                // 检查资源类型是否为场景
+                Debug.Log(location.ResourceType.ToString());
+                if (location.ResourceType == typeof(SceneInstance))
+                {
+                    // 获取场景的名称
+                    string sceneName = location.PrimaryKey.ToString();
+                    Debug.Log("Found GameLevel Scene: " + sceneName);
+
+                    // 将场景名称添加到列表中
+                    sceneNames.Add(sceneName);
+                }
             }
+
+            // 打印保存的场景名称列表
+            Debug.Log("All GameLevel Scenes: " + string.Join(", ", sceneNames));
+        }
+        else
+        {
+            Debug.LogError("Failed to load GameLevel scenes");
         }
 
-        m_levels = levelSceneNames.ToArray();
-        yield return null;
+        m_levels = sceneNames.ToArray();
+
+        // 释放操作句柄
+        Addressables.Release(handle);
     }
 
+    /// <summary>
+    /// 获取所有关卡名称
+    /// </summary>
+    /// <returns></returns>
     public string[] GetLevels()
     {
         return m_levels;
