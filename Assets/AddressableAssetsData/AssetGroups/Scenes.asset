@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Scenes
+  m_EditorClassIdentifier: 
+  m_GroupName: Scenes
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 2d929d072c6ba3a46a82a77c18486cf7
+  m_SerializeEntries:
+  - m_GUID: e046672f5d8afd34f822d14158de6db1
+    m_Address: Level1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80d3b8efe3885d949b296bca5f38ceac
+    m_Address: Level2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2d8c01c282082a469ac05587a7fe2b3
+    m_Address: Level3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc14c22ccf8434b41881004db56f17e5
+    m_Address: Level4
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fbf78a06c9ebfdc499c0f0c999c40e18
+    m_Address: Level5
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GameLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 287329f8f3fb3fa4cb6ee6dda0d939f0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: a8b4afe476bce9f4c849591e60ce21b7, type: 2}
+    - {fileID: 11400000, guid: 7040e387f1fcefa418df3a510c64a9ff, type: 2}

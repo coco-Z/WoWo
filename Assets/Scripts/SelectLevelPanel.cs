@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -112,10 +116,7 @@ public class SelectLevelPanel : MonoBehaviour
     /// <returns></returns>
     IEnumerator ChangeScene(string sceneName)
     {
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
-        asyncOperation.allowSceneActivation = false;
-
-        // 切换场景效果
+        // 切换场景过度效果
         GameObject maskGO = GameObject.Find("Canvas").transform.Find("Mask").gameObject;
         bool moveEnd = true;
         if (maskGO != null)
@@ -145,11 +146,36 @@ public class SelectLevelPanel : MonoBehaviour
             Debug.Log("没有找到Mask");
         }
 
-        while (!moveEnd && !asyncOperation.isDone)
+        // 加载所有带有指定标签的资源位置
+        AsyncOperationHandle<IList<IResourceLocation>> handle = Addressables.LoadResourceLocationsAsync("GameLevel");
+
+        if (handle.Status == AsyncOperationStatus.Succeeded)
         {
-            yield return null;
+            IList<IResourceLocation> locations = handle.Result;
+
+            // 遍历获取到的数据
+            foreach (IResourceLocation location in locations)
+            {
+                // 判断是否是场景资源
+                if (location.ResourceType == typeof(SceneInstance))
+                {
+                    // 判断名字是否是当前切换的场景
+                    if (location.PrimaryKey.Equals(sceneName))
+                    {
+                        AsyncOperationHandle<SceneInstance> sceneHandle = Addressables.LoadSceneAsync(location.PrimaryKey, LoadSceneMode.Single, false);
+                        yield return sceneHandle;
+
+                        while (!moveEnd)
+                        {
+                            yield return null;
+                        }
+
+                        sceneHandle.Result.ActivateAsync();
+                    }
+                }
+            }
         }
 
-        asyncOperation.allowSceneActivation = true;
+
     }
 }
