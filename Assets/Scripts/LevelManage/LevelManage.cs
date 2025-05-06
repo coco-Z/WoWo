@@ -6,6 +6,9 @@ using System.Linq;
 using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
 public class LevelManage : MonoBehaviour
@@ -62,9 +65,6 @@ public class LevelManage : MonoBehaviour
 
     IEnumerator ChangeScene(string sceneName)
     {
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
-        asyncOperation.allowSceneActivation = false;
-
         // 切换场景效果
         GameObject maskGO = GameObject.Find("LevelCanvas").transform.Find("Mask").gameObject;
         bool moveEnd = true;
@@ -91,12 +91,15 @@ public class LevelManage : MonoBehaviour
             GameManage.Instance.isMask = true;
         }
 
-        while (!moveEnd && !asyncOperation.isDone)
+        AsyncOperationHandle<SceneInstance> sceneHandle = Addressables.LoadSceneAsync(sceneName, LoadSceneMode.Single, false);
+        yield return sceneHandle;
+
+        while (!moveEnd)
         {
             yield return null;
         }
 
-        asyncOperation.allowSceneActivation = true;
+        sceneHandle.Result.ActivateAsync();
     }
 
     public void CheckpointTriggered(GameObject checkpoint)
