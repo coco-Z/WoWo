@@ -1,0 +1,25 @@
+﻿
+
+<linker>
+
+	<assembly fullname="Assembly-CSharp">
+	    <type fullname="Player" preserve="all"/>
+		<type fullname="PlayerStateIdle" preserve="all"/>
+		<type fullname="PlayerStateMove" preserve="all"/>
+		<type fullname="PlayerStateJump" preserve="all"/>
+		<type fullname="PlayerStateAttack" preserve="all"/>
+		<type fullname="PlayerStateSkill1" preserve="all"/>
+		<type fullname="PlayerStateSkill2" preserve="all"/>
+		<type fullname="PlayerStateSkill3" preserve="all"/>
+		<type fullname="PlayerStateHarmed" preserve="all"/>
+		<type fullname="PlayerStateDead" preserve="all"/>
+		<type fullname="Tutorial.BaseClass" preserve="all"/>
+		<type fullname="Tutorial.TestEnum" preserve="all"/>
+		<type fullname="Tutorial.DerivedClass" preserve="all"/>
+		<type fullname="Tutorial.ICalc" preserve="all"/>
+		<type fullname="Tutorial.DerivedClassExtensions" preserve="all"/>
+		<type fullname="Tutorial.DerivedClass+TestEnumInner" preserve="all"/>
+		
+	</assembly>
+
+</linker>

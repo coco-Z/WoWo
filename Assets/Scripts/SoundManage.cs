@@ -25,7 +25,7 @@ public class SoundManage : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<SoundManage>();
+                _instance = FindAnyObjectByType<SoundManage>();
                 if (_instance == null)
                 {
                     GameObject obj = new GameObject();

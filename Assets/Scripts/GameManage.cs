@@ -10,9 +10,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEditor;
 using UnityEngine.ResourceManagement.ResourceProviders;
+using XLua;
 
 public class GameManage : MonoBehaviour
 {
+    public LuaEnv luaEnv;
+
     private static GameManage instance;
     public static GameManage Instance => instance;
 
@@ -37,6 +40,8 @@ public class GameManage : MonoBehaviour
     // 在第一帧更新前调用启动
     void Start()
     {
+        luaEnv = new LuaEnv();
+
         GameObject bloodDeductionEffect = Resources.Load<GameObject>(@"Prefabs/Blood Deduction Effect");
         ObjectPoolManager.Instance.CreatePool(bloodDeductionEffect.name, bloodDeductionEffect, 20);
 

@@ -29,8 +29,8 @@ MonoBehaviour:
     m_SerializedLabels:
     - GameLevel
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a2d8c01c282082a469ac05587a7fe2b3
-    m_Address: Level3
+  - m_GUID: fbf78a06c9ebfdc499c0f0c999c40e18
+    m_Address: Level5
     m_ReadOnly: 0
     m_SerializedLabels:
     - GameLevel
@@ -41,8 +41,8 @@ MonoBehaviour:
     m_SerializedLabels:
     - GameLevel
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fbf78a06c9ebfdc499c0f0c999c40e18
-    m_Address: Level5
+  - m_GUID: a2d8c01c282082a469ac05587a7fe2b3
+    m_Address: Level3
     m_ReadOnly: 0
     m_SerializedLabels:
     - GameLevel

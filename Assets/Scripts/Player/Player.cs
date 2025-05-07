@@ -1,7 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using XLua;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
 
 /// <summary>
 /// 血量事件委托
@@ -38,9 +44,15 @@ public class MPManager
     }
 }
 
+[LuaCallCSharp]
+[Hotfix]
 public class Player : MonoBehaviour
 {
-    private IPlayerState playerState;
+    private LuaTable luaTable;
+    private Action<Player> startLua;
+    private Action<Player> updatatLua;
+
+    public IPlayerState playerState;
 
     [HideInInspector]
     public float moveSpeed = 5;
@@ -62,21 +74,57 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public int comboIndex = 0;
 
-    private int HP;
-    private int MP;
-    private bool isPause;
+    public int HP;
+    public int MP;
+    public bool isPause;
 
-    private Rigidbody2D m_rb;
+    public Rigidbody2D m_rb;
     private SpriteRenderer m_sprite;
-    private BoxCollider2D m_boxCollider;
+    public BoxCollider2D m_boxCollider;
     private TrailRenderer m_trailRenderer;
 
     private PhysicsMaterial2D normalMaterial;       // 正常的物理材质
     private PhysicsMaterial2D noFrictionMaterial;   // 没有阻力的物理材质
 
+    private void Awake()
+    {
+        // 为每个脚本设置一个独立的脚本域，可一定程度上防止脚本间全局变量、函数冲突
+        luaTable = GameManage.Instance.luaEnv.NewTable();
+
+        // 设置其元表的 __index, 使其能够访问全局变量
+        using (LuaTable meta = GameManage.Instance.luaEnv.NewTable())
+        {
+            meta.Set("__index", GameManage.Instance.luaEnv.Global);
+            luaTable.SetMetaTable(meta);
+        }
+
+        var handle = Addressables.LoadAssetAsync<TextAsset>("PlayerLua.lua");
+        handle.WaitForCompletion();
+
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            // 获取 Lua 脚本内容
+            TextAsset luaScript = handle.Result;
+            // 执行 Lua 脚本
+            GameManage.Instance.luaEnv.DoString(luaScript.text, luaScript.name, luaTable);
+
+            startLua = luaTable.Get<Action<Player>>("Start");
+            updatatLua = luaTable.Get<Action<Player>>("Updata");
+        }
+        else
+        {
+            Debug.Log("Player.lua 加载失败");
+        }
+    }
+
     // 在第一帧更新前调用启动
     void Start()
     {
+        if (startLua != null)
+        {
+            startLua(this);
+        }
+
         ChangeState(new PlayerStateIdle());
 
         m_rb = GetComponent<Rigidbody2D>();
@@ -84,11 +132,6 @@ public class Player : MonoBehaviour
         m_boxCollider = GetComponent<BoxCollider2D>();
         m_trailRenderer = GetComponent<TrailRenderer>();
 
-        moveSpeed = 5;
-        jumpForce = 12.5f;
-
-        HP = 10;
-        MP = 5;
         HealthManager.TriggerHealthChanged(HP);
         MPManager.TriggerMPChanged(MP);
 
@@ -96,35 +139,24 @@ public class Player : MonoBehaviour
         noFrictionMaterial = Resources.Load<PhysicsMaterial2D>(@"Materials/No Friction Material");
 
         StartCoroutine(RecoverMP());
-
         PauseChange.OnPauseChanged += Pause;
     }
 
     // 每帧调用一次更新
     void Update()
     {
-        if (isPause)
+        if (updatatLua != null)
         {
-            return;
+            updatatLua(this);
         }
 
-        currentComboTime -= Time.deltaTime;
-        currentComboTime = Mathf.Max(currentComboTime, -1);
-        currentComboWaitTime -= Time.deltaTime;
-        currentComboWaitTime = Mathf.Max(currentComboWaitTime, -1);
+    }
 
-        if (playerState != null)
-        {
-            playerState.HandleInput(this);
-            playerState.Update(this);
-        }
-
-        if (IsDead())
-        {
-            return;
-        }
-
-        // 判断是否在下落
+    /// <summary>
+    /// 检测是否落下
+    /// </summary>
+    void CheckOnGround()
+    {
         isNotOnGround = false;
         if (m_rb.velocity.y > 0.2f || m_rb.velocity.y < -0.2f)
         {
@@ -167,6 +199,14 @@ public class Player : MonoBehaviour
         PauseChange.OnPauseChanged -= Pause;
     }
 
+    private void OnDestroy()
+    {
+        // 销毁 Lua 环境
+        luaTable = null;
+        startLua = null;
+        updatatLua = null;
+    }
+
     private void Pause(bool pause)
     {
         isPause = pause;
@@ -197,20 +237,11 @@ public class Player : MonoBehaviour
 
     public void Harmer(int value)
     {
-        if (IsDead()) 
+        var luaHuarmer = luaTable.Get<LuaFunction>("LuaHarmer");
+        if (luaHuarmer == null)
         {
-            return;
+            luaHuarmer.Call(this, -value);
         }
-
-        SoundManage.Player(SoundName.playerHit);
-
-        ChangeHP(-value);
-        if (IsDead()) 
-        {
-            return; 
-        }
-
-        ChangeState(new PlayerStateHarmed());
     }
 
     public void ChangeHP(int changeValue)

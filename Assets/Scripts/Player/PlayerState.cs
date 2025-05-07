@@ -1,6 +1,8 @@
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
+using XLua;
 
 /// <summary>
 /// 玩家状态接口
@@ -17,6 +19,7 @@ public interface IPlayerState
 /// <summary>
 /// Idle状态
 /// </summary>
+[LuaCallCSharp]
 public class PlayerStateIdle : IPlayerState
 {
     private Animator m_animator;
@@ -94,6 +97,7 @@ public class PlayerStateIdle : IPlayerState
 /// <summary>
 /// 移动状态
 /// </summary>
+[LuaCallCSharp]
 public class PlayerStateMove : IPlayerState
 {
     private Rigidbody2D m_rb;
@@ -193,6 +197,7 @@ public class PlayerStateMove : IPlayerState
 /// <summary>
 /// 跳跃状态
 /// </summary>
+[LuaCallCSharp]
 public class PlayerStateJump : IPlayerState
 {
     private Rigidbody2D m_rb;
@@ -269,6 +274,7 @@ public class PlayerStateJump : IPlayerState
 /// <summary>
 /// 攻击状态
 /// </summary>
+[LuaCallCSharp]
 public class PlayerStateAttack : IPlayerState
 {
     private Animator m_animator;
@@ -376,6 +382,7 @@ public class PlayerStateAttack : IPlayerState
 /// <summary>
 /// 技能1
 /// </summary>
+[LuaCallCSharp]
 public class PlayerStateSkill1 : IPlayerState
 {
     private Animator m_animator;
@@ -483,6 +490,7 @@ public class PlayerStateSkill1 : IPlayerState
 /// <summary>
 /// 技能2
 /// </summary>
+[LuaCallCSharp]
 public class PlayerStateSkill2 : IPlayerState
 {
     private Animator m_animator;
@@ -552,6 +560,7 @@ public class PlayerStateSkill2 : IPlayerState
 /// <summary>
 /// 技能3
 /// </summary>
+[LuaCallCSharp]
 public class PlayerStateSkill3 : IPlayerState
 {
     private float dashDuration = 0.04f;  // 冲刺持续时间
@@ -625,6 +634,7 @@ public class PlayerStateSkill3 : IPlayerState
 /// <summary>
 /// 受伤状态
 /// </summary>
+[LuaCallCSharp]
 public class PlayerStateHarmed : IPlayerState
 {
     private Animator m_animator;
@@ -665,6 +675,7 @@ public class PlayerStateHarmed : IPlayerState
 /// <summary>
 /// 死亡状态
 /// </summary>
+[LuaCallCSharp]
 public class PlayerStateDead : IPlayerState
 {
     private Animator m_animator;
