@@ -155,7 +155,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 检测是否落下
     /// </summary>
-    void CheckOnGround()
+    private void CheckOnGround()
     {
         isNotOnGround = false;
         if (m_rb.velocity.y > 0.2f || m_rb.velocity.y < -0.2f)
@@ -170,24 +170,24 @@ public class Player : MonoBehaviour
         // 切换材质
         if (isNotOnGround)
         {
-            if (m_rb.sharedMaterial == normalMaterial)
+            if (m_rb.sharedMaterial != noFrictionMaterial)
             {
                 m_rb.sharedMaterial = noFrictionMaterial;
             }
 
-            if (m_boxCollider.sharedMaterial == normalMaterial)
+            if (m_boxCollider.sharedMaterial != noFrictionMaterial)
             {
                 m_boxCollider.sharedMaterial = noFrictionMaterial;
             }
         }
         else
         {
-            if (m_rb.sharedMaterial == noFrictionMaterial)
+            if (m_rb.sharedMaterial != normalMaterial)
             {
                 m_rb.sharedMaterial = normalMaterial;
             }
 
-            if (m_boxCollider.sharedMaterial == noFrictionMaterial)
+            if (m_boxCollider.sharedMaterial != normalMaterial)
             {
                 m_boxCollider.sharedMaterial = normalMaterial;
             }
@@ -238,7 +238,7 @@ public class Player : MonoBehaviour
     public void Harmer(int value)
     {
         var luaHuarmer = luaTable.Get<LuaFunction>("LuaHarmer");
-        if (luaHuarmer == null)
+        if (luaHuarmer != null)
         {
             luaHuarmer.Call(this, -value);
         }
