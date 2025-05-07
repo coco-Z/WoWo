@@ -15,9 +15,9 @@ MonoBehaviour:
   m_DefaultGroup: b5e1a0bd14789d24d8cb819ab54aacd3
   m_currentHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: 1eac5ffc130c0f34b8040945684bf16a
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
@@ -35,10 +35,10 @@ MonoBehaviour:
   m_CheckForContentUpdateRestrictionsOption: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 
+    m_Id: 6f404df55032d9745bdb1f241d1669df
   m_RemoteCatalogLoadPath:
-    m_Id: 
-  m_ContentStateBuildPathProfileVariableName: 
+    m_Id: 64fc12866067922479a436a2dffec7d0
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
@@ -66,9 +66,23 @@ MonoBehaviour:
       - m_Id: bf7384be66c99834aa190e25862e9a74
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: 6f404df55032d9745bdb1f241d1669df
-        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+        m_Value: 'ServerData/[BuildTarget]'
       - m_Id: 64fc12866067922479a436a2dffec7d0
+        m_Value: 'http://[PrivateIpAddress]:[HostingServicePort]'
+    - m_InheritedParent: 
+      m_Id: 0c165d320d059ae48a7564c1bbe824de
+      m_ProfileName: MPath
+      m_Values:
+      - m_Id: 0c9f811917c67e14baca5239073e1acd
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: 34d1fdc9b48b4604da19c2872260d2df
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: bf7384be66c99834aa190e25862e9a74
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 6f404df55032d9745bdb1f241d1669df
+        m_Value: 'ServerData/[BuildTarget]'
+      - m_Id: 64fc12866067922479a436a2dffec7d0
+        m_Value: http://127.0.0.1:8000/Addressables
     m_ProfileEntryNames:
     - m_Id: 0c9f811917c67e14baca5239073e1acd
       m_Name: BuildTarget
@@ -104,7 +118,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0a6fffe726ca7b04b89eecc4423097e5, type: 2}
   - {fileID: 11400000, guid: c06d7111c51cd3848ac0694447631d31, type: 2}
   - {fileID: 11400000, guid: 5a5fa01371150104ba171dcd3aff3951, type: 2}
-  m_ActiveProfileId: 211cb08ce20500046af60c284d664ee3
+  m_ActiveProfileId: 0c165d320d059ae48a7564c1bbe824de
   m_HostingServicesManager:
     m_HostingServiceInfos: []
     m_Settings: {fileID: 11400000}

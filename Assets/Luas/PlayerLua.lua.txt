@@ -9,7 +9,7 @@ function Start(obj)
 
     -- 修改初始化数据
     obj.moveSpeed = 5
-    obj.jumpForce = 12.5
+    obj.jumpForce = 20
     obj.HP = 10
     obj.MP = 5
 end
